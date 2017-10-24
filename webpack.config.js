@@ -9,11 +9,15 @@ module.exports = {
   },
   externals: [nodeExternals()],
   module: {
-    rules: [{
+    rules: [
+            {
       test: /\.js$/,
       loader: 'babel-loader',
       include: path.resolve(__dirname, 'src'),
       exclude: path.resolve(__dirname, 'node_modules'),
+      query: {
+            cacheDirectory: true,
+            presets: ['react', 'es2015'] }
     }],
   },
   output: {

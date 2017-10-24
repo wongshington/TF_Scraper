@@ -25,16 +25,16 @@ const scraper = async function() {
   // other things that need a little extra time to load
 
 
-  await page.evaluate(function() {
+  const results = await page.evaluate(function() {
     const rows = document.querySelectorAll('table.DataTable tr');
     console.log(rows.length);
 
     const returnData = [];
     //going to create row objects with data and push them into returnData
 
-    let current = {finishers: []};
-    let first = true;
-    for (let i = 0; i < rows.length; i++) {
+    var current = {finishers: []};
+    var first = true;
+    for (var i = 0; i < rows.length; i++) {
       const currRow = rows[i];
 
       if (first) {
@@ -44,13 +44,17 @@ const scraper = async function() {
 
       } else if (currRow.classList.contains('hidden-print')){
           first = true;
+
+          returnData.push(current);
+          current = { finishers: [] };
+          //we reset our "current" once we hit a new event gorup
       } else {
         const cols = currRow.children;
         //cols = all the td's inside each tr
 
         const finisher = {};
 
-        for (let j = 0; j < cols.length; j++ ){
+        for (var j = 0; j < cols.length; j++ ){
           switch(j) {
           case 0:
             finisher['place'] = cols[j].innerHTML;
@@ -61,15 +65,18 @@ const scraper = async function() {
           }
         }
         current.finishers.push(finisher)
-
       }
-      returnData.push(current);
-      current = { finishers: [] };
+
     }
+    //end of main for loop (what to copy paste in dev tools up until)
 
-
+  return window.JSON.stringify(returnData);
+  //because phantom will only let you return strings or numbers
   });
-
+  //end of .evaluate function
+  console.log(results);
+  const output = JSON.parse(results);
+  console.log(output);
   instance.exit();
 };
 

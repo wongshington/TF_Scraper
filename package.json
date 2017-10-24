@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {"start": "webpack --watch"},
+  "scripts": {
+    "start": "webpack --watch"
+  },
   "keywords": [],
   "author": "",
   "devDependencies": {
