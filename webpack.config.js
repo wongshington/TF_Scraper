@@ -17,7 +17,7 @@ module.exports = {
       exclude: path.resolve(__dirname, 'node_modules'),
       query: {
             cacheDirectory: true,
-            presets: ['react', 'es2015'] }
+            presets: ['react', 'env'] }
     }],
   },
   output: {

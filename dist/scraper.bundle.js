@@ -86,7 +86,9 @@ const scraper = async function() {
   const page = await instance.createPage();
 
   await page.open(
-    'https://www.athletic.net/TrackAndField/Division/Top.aspx?DivID=80281'
+    'https://www.athletic.net/TrackAndField/Division/Event.aspx?DivID=80281&Event=1&page=0'
+    // 'https://www.athletic.net/TrackAndField/Division/Event.aspx?DivID=80281&Event=1&type=4'
+    // 'https://www.athletic.net/TrackAndField/Division/Top.aspx?DivID=80281'
   );
 
   page.property('onConsoleMessage', function(msg) {
@@ -105,41 +107,56 @@ const scraper = async function() {
     const returnData = [];
     //going to create row objects with data and push them into returnData
 
-    var current = {finishers: []};
+    var current = {athletes: []};
     var first = true;
-    for (var i = 0; i < rows.length; i++) {
+    for (var i = 0; i < rows.length-1; i++) {
       const currRow = rows[i];
 
       if (first) {
-        current['event'] = currRow.querySelector('a').innerHTML;
-        //this will query from the parent element of currRow
+        current['event'] = document.querySelectorAll('h2')[0].innerText;
+        //this will query from the whole page to find the title element and input that into our results
         first = false;
 
-      } else if (currRow.classList.contains('hidden-print')){
+      } else if (currRow.classList.contains('.btn.btn-default.mRight10')){
+        // this conditional will ultimately handle clicking onto the next page
           first = true;
 
-          returnData.push(current);
-          current = { finishers: [] };
+          current = { athletes: [] };
+          break;
           //we reset our "current" once we hit a new event gorup
       } else {
         const cols = currRow.children;
         //cols = all the td's inside each tr
+        // console.log(cols);
+        const athlete = {};
 
-        const finisher = {};
-
-        for (var j = 0; j < cols.length; j++ ){
+        for (var j = 1; j < 7; j++ ){
+          // i dont care about [0]
           switch(j) {
-          case 0:
-            finisher['place'] = cols[j].innerHTML;
-            break;
           case 1:
-            finisher['grade'] = cols[j].innerHTML;
+            athlete['grade'] = cols[j].innerText;
+            break;
+          case 2:
+            athlete['name'] = cols[j].innerText;
+            break;
+          case 3:
+          // i dont care about this info
+            break;
+          case 4:
+            athlete['PR'] = cols[j].innerText;
+            break;
+          case 5:
+            athlete['state'] = cols[j].innerText;
+            break;
+          case 6:
+            athlete['school'] = cols[j].innerText;
             break;
           }
         }
-        current.finishers.push(finisher)
+        current.athletes.push(athlete)
+        // console.log("current", current);
       }
-
+returnData.push(current);
     }
     //end of main for loop (what to copy paste in dev tools up until)
 
