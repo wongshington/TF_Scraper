@@ -19,7 +19,7 @@ const scraper = async function() {
   );
 
   page.property('onConsoleMessage', function(msg) {
-    console.log(msg);
+    // console.log(msg);
   });
 
   await timeout(3000);
@@ -29,7 +29,7 @@ const scraper = async function() {
 
   const results = await page.evaluate(function() {
     const rows = document.querySelectorAll('table.DataTable tr');
-    console.log(rows.length);
+    // console.log(rows.length);
 
     const returnData = [];
     //going to create row objects with data and push them into returnData
@@ -37,6 +37,7 @@ const scraper = async function() {
     var current = {athletes: []};
     var first = true;
     for (var i = 0; i < rows.length-1; i++) {
+      // console.log(i);
       const currRow = rows[i];
 
       if (first) {
@@ -83,8 +84,8 @@ const scraper = async function() {
         current.athletes.push(athlete)
         // console.log("current", current);
       }
-returnData.push(current);
     }
+    returnData.push(current);
     //end of main for loop (what to copy paste in dev tools up until)
 
   return window.JSON.stringify(returnData);
