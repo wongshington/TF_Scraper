@@ -5,7 +5,7 @@ module.exports = {
   entry: './tf_scraper.js',
   target: 'node',
   node: {
-    fs: 'empty'
+    fs: true
   },
   externals: [nodeExternals()],
   module: {

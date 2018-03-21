@@ -1,5 +1,9 @@
 import phantom from 'phantom';
 import pageScraper from './page_scraper.js'
+import fs from "fs";
+// const fs1 = require('fs');
+// var fs = require("fs");
+
 
 const timeout = function(ms) {
   return new Promise(function(res){setTimeout(res, ms)});
@@ -25,13 +29,33 @@ const scraper = async function() {
   //tells it to wait 3 seconds, just in case page has extra js or
   // other things that need a little extra time to load
 
-  const results = await pageScraper(page);
+  const pageResults = await pageScraper(page);
   // this line above runs the separate file that scrapes an individual "page"
 
 
-  console.log(results);
-  const output = JSON.parse(results);
-  console.log(output);
+  const output = JSON.stringify(pageResults, null, 4);
+  const tester = {
+    a:"string",
+    b:"string2",
+    c: {
+      a1: "nest",
+      b2: "nester"
+    }
+  };
+
+
+  // console.log(results);
+  // const output2 = JSON.parse(results);
+  // console.log(output);
+
+await fs.writeFile("./output.csv", output, (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log("File has been created");
+  });
+
   instance.exit();
 };
 

@@ -60,19 +60,31 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+module.exports = require("phantom");
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phantom__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phantom__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phantom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_phantom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__page_scraper_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__page_scraper_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fs__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_fs__);
 
+
+
+// const fs1 = require('fs');
+// var fs = require("fs");
 
 
 const timeout = function(ms) {
@@ -99,13 +111,33 @@ const scraper = async function() {
   //tells it to wait 3 seconds, just in case page has extra js or
   // other things that need a little extra time to load
 
-  const results = await Object(__WEBPACK_IMPORTED_MODULE_1__page_scraper_js__["a" /* default */])(page);
+  const pageResults = await Object(__WEBPACK_IMPORTED_MODULE_1__page_scraper_js__["a" /* default */])(page);
   // this line above runs the separate file that scrapes an individual "page"
 
 
-  console.log(results);
-  const output = JSON.parse(results);
-  console.log(output);
+  const output = JSON.stringify(pageResults, null, 4);
+  const tester = {
+    a:"string",
+    b:"string2",
+    c: {
+      a1: "nest",
+      b2: "nester"
+    }
+  };
+
+
+  // console.log(results);
+  // const output2 = JSON.parse(results);
+  // console.log(output);
+
+await __WEBPACK_IMPORTED_MODULE_2_fs___default.a.writeFile("./output.csv", output, (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log("File has been created");
+  });
+
   instance.exit();
 };
 
@@ -126,18 +158,11 @@ scraper();
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = require("phantom");
-
-/***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phantom__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phantom__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phantom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_phantom__);
 
 
@@ -181,9 +206,9 @@ const pageScraper = (page) =>  page.evaluate(function() {
         case 2:
           athlete['name'] = cols[j].innerText;
           break;
-        case 3:
-        // i dont care about this info
-          break;
+        // case 3:
+        // // i dont care about this info
+        //   break;
         case 4:
           athlete['PR'] = cols[j].innerText;
           break;
@@ -211,6 +236,12 @@ return window.JSON.stringify(returnData);
 
 /* harmony default export */ __webpack_exports__["a"] = (pageScraper);
 
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
 
 /***/ })
 /******/ ]);

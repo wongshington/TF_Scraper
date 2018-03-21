@@ -40,9 +40,9 @@ const pageScraper = (page) =>  page.evaluate(function() {
         case 2:
           athlete['name'] = cols[j].innerText;
           break;
-        case 3:
-        // i dont care about this info
-          break;
+        // case 3:
+        // // i dont care about this info
+        //   break;
         case 4:
           athlete['PR'] = cols[j].innerText;
           break;
