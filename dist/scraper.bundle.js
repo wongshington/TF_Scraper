@@ -115,7 +115,7 @@ const scraper = async function() {
   // this line above runs the separate file that scrapes an individual "page"
 
 
-  const output = JSON.stringify(pageResults, null, 4);
+  const output = JSON.stringify(pageResults, null, 10);
   const tester = {
     a:"string",
     b:"string2",
